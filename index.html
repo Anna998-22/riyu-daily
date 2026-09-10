@@ -99,7 +99,9 @@
           </svg>
         </div>
         <div class="bh-body">
-          <span class="bh-kicker">🇯🇵 真实场景日语</span>
+          <div class="bh-route" aria-label="从中国到日本">
+            <span>中国</span><i aria-hidden="true">→</i><span>日本</span>
+          </div>
           <h2>去日本，<br>不怕开口。</h2>
           <p class="bh-sub">提前练会你在日本真正会用到的话。</p>
           <div class="bh-tags"><span>纯离线</span><span>随开随用</span><span>进度存本机</span></div>
@@ -114,7 +116,7 @@
         </div>
         <!-- 免费体验的入口沿用原来的 storyGate 结构（封面/标题/开场都是现成的） -->
         <div id="storyGate" class="storygate" hidden>
-          <div class="sg-media"><img id="sgCover" src="img/cafe/scene-01.svg" alt="咖啡店场景插画"></div>
+          <div class="sg-media"><img id="sgCover" src="img/cafe/scene-01.jpg" width="408" height="615" decoding="async" alt="咖啡店场景插画"></div>
           <div class="sg-body">
             <div class="sg-tags"><span class="tag accent">真实情景 · 沉浸式</span><span id="sgDone" class="tag pass" hidden>✅ 已完成</span></div>
             <h3 id="sgTitle">咖啡店点单 <em id="sgTitleJa">かふぇで ちゅうもん</em></h3>
@@ -126,11 +128,17 @@
         <div id="todayAlt" class="todayalt" hidden></div>
       </div>
 
-      <!-- ---- ② 我的学习进度（环形 + 四行细分 + 出发倒计时） ---- -->
-      <div class="homecard progcard" id="progCard"></div>
+      <!-- ---- ② 学习进度 + 篇目入口（桌面端并排两栏，手机端上下单列） ----
+           .home-two 只是这两块的外壳：手机端是个普通块（不影响任何现有样式），
+           桌面端由 css 里 @media(min-width:1000px) 的那段变成两列网格 ——
+           对齐参考图「你的日本之旅 ｜ 我的学习进度」左右各半的排布。 -->
+      <div class="home-two">
+        <!-- 旅行篇 / 求学篇入口（与场景地图用同一个渲染函数） -->
+        <div class="packentry" id="packEntry"></div>
 
-      <!-- ---- ③ 旅行篇 / 求学篇入口（与场景地图用同一个渲染函数） ---- -->
-      <div class="packentry" id="packEntry"></div>
+        <!-- 我的学习进度（环形 + 四行细分 + 出发倒计时） -->
+        <div class="homecard progcard" id="progCard"></div>
+      </div>
 
       <!-- ---- ④ 旅行篇 · 推荐路线（25 关，原有内容保留） ---- -->
       <div class="hero">
@@ -390,6 +398,7 @@
   <script src="js/content/registry.js"></script>
   <script src="js/content/phrases.js"></script>
   <script src="js/entitlement.js"></script>
+  <script src="js/voice.js"></script>
   <script src="js/story/cafe.js"></script>
   <script src="js/app.js"></script>
 

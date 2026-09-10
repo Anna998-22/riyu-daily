@@ -2817,3 +2817,133 @@ body { min-height: var(--vh-full); }
 .sfin-thumb .st-lock { font-size: 10px; line-height: 1; opacity: .7; }
 .sfin-card.more .btn { width: 100%; }
 
+
+/* ============================================================
+   v6 追加 · 对齐参考图：桌面三栏 + 手机端重适配 + 滑动
+   ------------------------------------------------------------
+   这一节**全部是追加的覆盖规则**：上面任何既有选择器的定义都不动，
+   桌面参考版的版式、手机端的断点、滑动的性能项都在这里收口。
+   参考图：桌面 = 左栏导航 ｜ 中栏 Dashboard ｜ 右栏信息卡；
+           手机 = 单列、留白多、底部只留 4 个 tab。
+   原则：不加渐变、不加 3D、不加参考图里没有的元素。
+   ============================================================ */
+
+/* ---------- ① 横向溢出：兜底 ----------
+   用 overflow-x:clip 而不是 hidden —— clip 不创建滚动容器，
+   .topbar 的 position:sticky 因此照旧（hidden 会让它换参照系）。
+   真正的溢出源在下面逐条修，这一条只是最后一道保险。 */
+html, body { max-width: 100%; overflow-x: clip; }
+
+/* 已知容易顶破宽度的容器：允许自己内部横滑，但不许把父级撑宽。
+   min-width:0 是关键 —— flex/grid 子项默认 min-width:auto，
+   内容一宽就把容器顶出去，光靠 overflow 藏不住。 */
+.hotscroll, .story-progress, .sfin-thumbs, .grid { max-width: 100%; }
+.sline-main, .sstep, .snpc, .sopts, .sceneimg { min-width: 0; max-width: 100%; }
+
+/* ---------- ② 咖啡店封面：别把竖图拉扁 ----------
+   新封面是竖图（约 408×615）。原来 .todaycard .sg-media img 写死了
+   width:100% + height:132px（宽屏 196px），等于把竖图硬拉成一条横缝：
+   人物变形、图上印的「① 入店」徽章也糊了。
+   改成只限高、宽度按原比例走 —— 任何宽度下都不拉伸、不裁切，
+   也就不可能把原图放大到发虚。 */
+.todaycard .sg-media img {
+  width: auto; height: auto;
+  max-width: 100%; max-height: 220px;
+  margin: 0 auto;
+}
+
+/* 剧情页插画同理：高度交给比例，不要写死 */
+.sceneimg img { height: auto; }
+
+/* ---------- ③ 热门场景：还原成主区正常板块 ----------
+   参考图里「热门场景」是主区里清楚醒目的六张卡，不是被压灰的附注。
+   去掉 v5 的降权（小标题 + opacity .82），回到 .hot-head 的基础观感。 */
+.hotwrap-dim { margin-top: 20px; }
+.hotwrap-dim .hot-head h3 { font-size: 16px; font-weight: 800; color: var(--ink); }
+.hotwrap-dim .hotcard { opacity: 1; }
+
+/* ---------- ④ 滑动：横滑条更顺 ----------
+   scroll-snap 让卡片停在整齐的位置；touch-action 让浏览器不必等
+   脚本判断就能起步滚动（省掉那几十毫秒的迟疑）。
+   只加在本来就横向滚动的东西上，纵向滚动一行不动。 */
+.hotscroll { scroll-snap-type: x proximity; touch-action: pan-x pan-y; }
+.hotcard { scroll-snap-align: start; }
+.story-progress { scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
+
+/* ---------- ⑤ 手机端断点：375 / 390 / 414 / 430 ----------
+   原来只有一个 max-width:640px 的粗断点，390 和 430 拿到同一套尺寸。
+   这里补两端：≤379 更紧凑，414–999 放宽留白，中间维持现状。 */
+
+/* 小屏（SE 375 / 安卓 360）：先保字与按钮够用，留白收一点 */
+@media (max-width: 379px) {
+  .bh-body { padding: 14px 15px 16px; }
+  .bh-body h2 { font-size: 26px; }
+  .homecard, .rail-card { padding: 13px 14px; }
+  .sline .say { font-size: 17px; }
+  .sceneimg img { max-width: 260px; }
+  .hotcard { flex-basis: 108px; }
+}
+
+/* 大屏手机（414 / 430）：留白放开，别看着像被拉长的窄屏 */
+@media (min-width: 414px) and (max-width: 999px) {
+  main { padding-left: 20px; padding-right: 20px; }
+  .bh-body h2 { font-size: 31px; }
+  .sline .say { font-size: 19.5px; }
+  .sceneimg img { max-width: 330px; }
+  .hotcard { flex-basis: 132px; }
+}
+
+/* 手指友好：手机上可点目标不低于 44×44。
+   剧情页的选项按钮 .copt-pick 是整行里真正的点击区，单独提出来加高。 */
+@media (max-width: 999px) {
+  .copt-pick, .minibtn, .linkbtn, .rc-btn, .tab { min-height: 44px; }
+  .linkbtn { display: inline-flex; align-items: center; }
+}
+
+/* ---------- ⑥ 桌面端：对齐参考图 ---------- */
+@media (min-width: 1000px) {
+  /* 「你的日本之旅 ｜ 我的学习进度」并排两栏（参考图是左右各半）。
+     .home-two 只是这两块的外壳，手机端是普通块，完全不影响现有样式。 */
+  .home-two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+    margin-bottom: 16px;
+  }
+  .home-two > * { margin-bottom: 0; }
+  .home-two .homecard,
+  .home-two .packentry { margin-bottom: 0; }
+  .home-two .packentry .mapcard:last-child { margin-bottom: 0; }
+
+  /* 封面在桌面给大一点（仍是原比例，且限在原图宽度以内） */
+  .todaycard .sg-media img { max-height: 300px; }
+
+  /* 剧情页插画：桌面居中限宽 380px。
+     最小的原图只有 391px 宽，卡在 380 就不会有任何一张被放大。 */
+  .sceneimg img { max-width: 380px; }
+
+  /* 今日推荐在桌面改成「左图右文」。
+     封面是竖图，之前居中放在一张通栏卡里，左右各空出一大片白，
+     卡片又高又空。改成横排后图文各占一边，白就不剩了。 */
+  .todaycard .storygate { display: flex; align-items: center; gap: 20px; }
+  .todaycard .sg-media { width: 190px; flex: none; margin: 0; }
+  .todaycard .sg-media img { max-height: 274px; }
+  .todaycard .sg-body { flex: 1; min-width: 0; }
+}
+
+/* ---------- ⑦ Hero 上的「中国 → 日本」行程胶囊 ----------
+   参考图里标题上方有一条「中国 → 日本」的行程标签。这里用一条
+   素净的胶囊还原：不加渐变、不加阴影，只有边框和字。 */
+.bh-route {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-bottom: 10px;
+  padding: 4px 11px 4px 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 12.5px; font-weight: 700; color: var(--ink-soft);
+  letter-spacing: .02em;
+}
+.bh-route i { font-style: normal; color: var(--brand); font-weight: 700; }
+

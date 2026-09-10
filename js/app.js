@@ -209,89 +209,16 @@
   }
 
   /* ---------------- 日语朗读（浏览器本地语音，无需联网） ----------------
-   * 优先挑选更自然的日语语音（neural / 系统自带日语女声等），找不到时回退到
-   * 第一个日语语音，再找不到则整体降级（隐藏朗读按钮）。
-   * speak(text, cb)：可选完成后回调(用于“先标准音、后自己的录音”对照)。
-   * playSentence(node, text, cb)：整句播放入口——先打断上句、只高亮“正在读的一句”。
+   * 真正的实现已经搬进 js/voice.js（window.RIYU_VOICE）。
+   * 这里只留一层薄封装，**函数名和签名跟原来完全一样** —— 下面二十多处
+   * 调用点一行都不用改。想换成更自然的日语 TTS，改 js/voice.js 即可。
    * --------------------------------------------------------------------- */
-  var jaVoice = null;
-  /* 候选自然度加分名单（按偏好从高到低，仅用于挑选，不强制） */
-  var JA_VOICE_PREF = ["Google 日本語", "Google Japanese", "Haruka", "Nanami", "Ayumi", "Sayaka", "Ichiro", "Keita", "Kyoko"];
-  function voiceScore(v) {
-    var s = 0;
-    var lang = (v.lang || "").toLowerCase();
-    if (lang === "ja-jp") s += 10;
-    else if (lang.indexOf("ja") === 0) s += 6;
-    var name = v.name || "";
-    if (/neural|onnx|natural/i.test(name)) s += 3;
-    for (var i = 0; i < JA_VOICE_PREF.length; i++) {
-      if (name.toLowerCase().indexOf(JA_VOICE_PREF[i].toLowerCase()) >= 0) { s += (9 - i); break; }
-    }
-    return s;
-  }
-  function refreshVoice() {
-    var vs = window.speechSynthesis ? speechSynthesis.getVoices() : [];
-    jaVoice = null;
-    var best = -1;
-    for (var i = 0; i < vs.length; i++) {
-      if (!/^ja/i.test(vs[i].lang || "")) continue;
-      var sc = voiceScore(vs[i]);
-      if (best < 0 || sc > best) { jaVoice = vs[i]; best = sc; }
-    }
-    updateVoiceUI();
-  }
-  function updateVoiceUI() {
-    var ok = !!(window.speechSynthesis && jaVoice);
-    document.body.classList.toggle("noVoice", !ok);
-    var box = $("#voiceState");
-    if (box) box.textContent = ok ? "已找到：" + jaVoice.name : "未检测到日语语音（安装系统日语语音包后自动出现）";
-  }
-  function ttsAvailable() { return !!(window.speechSynthesis && jaVoice); }
-
-  /* 全局“正在朗读”的那一句（视觉高亮只保持一个，换句自动清除） */
-  var sayingEl = null;
-  function stopSay() {
-    if (sayingEl) {
-      sayingEl.classList.remove("speaking");
-      if (sayingEl.tagName === "AUDIO") { try { sayingEl.pause(); } catch (e) {} }
-      sayingEl = null;
-    }
-  }
-  /* 播放 text 并给 node 加“speaking”轻高亮；同一时刻只高亮一句，新播放先停旧的 */
-  function playSentence(node, text, cb) {
-    if (!ttsAvailable() || !text) { if (typeof cb === "function") cb(); return; }
-    /* speak 内部已先 cancel + stopSay 清掉上一句，所以高亮放在它返回之后再加。
-       但个别语音引擎会「同步」回调 onend/onerror（无声设备上常见），
-       那样回调会跑在挂高亮之前，这句就会永远亮着——用 finished 标记补一次清理。 */
-    var finished = false;
-    speak(text, function () {
-      finished = true;
-      if (sayingEl === node) stopSay();
-      if (typeof cb === "function") cb();
-    });
-    if (node) { node.classList.add("speaking"); sayingEl = node; }
-    if (finished && sayingEl === node) stopSay();
-  }
-  function speak(text, cb) {
-    var done = false;
-    function fin() { if (!done) { done = true; if (typeof cb === "function") cb(); } }
-    if (!ttsAvailable() || !text) { fin(); return; }
-    speechSynthesis.cancel();
-    stopSay();               // 打断上一句朗读并去掉它的高亮
-    var u = new SpeechSynthesisUtterance(text);
-    u.lang = "ja-JP";
-    u.voice = jaVoice;
-    u.rate = state.settings.rate;   // 默认 0.95，更适合跟读，不赶
-    u.pitch = 1;
-    u.volume = 1;
-    if (typeof cb === "function") {
-      u.onend = fin;
-      u.onerror = fin;
-      /* 兜底：个别语音引擎不回调 onend 时自动继续，避免卡住对照流程 */
-      setTimeout(fin, Math.max(2500, 800 + text.length * 110));
-    }
-    speechSynthesis.speak(u);
-  }
+  var V = window.RIYU_VOICE;
+  function refreshVoice() { V.refresh(); }
+  function updateVoiceUI() { V.updateUI(); }
+  function ttsAvailable() { return V.available(); }
+  function playSentence(node, text, cb) { V.play(node, text, cb); }
+  function speak(text, cb) { V.speak(text, cb); }
 
   /* ---------------- 视图切换（v4：支持手机返回键） ----------------
    * 为什么用 location.hash 而不是 history.pushState：
@@ -333,7 +260,7 @@
       if (s) s.hidden = k !== view;
     }
     if (view !== "scenario") closeVocab();   // 离开情景时收起词卡栏
-    if (view !== "story") { chainStop(); autoRelease = null; }   // 离开沉浸页即打断自动朗读
+    if (view !== "story") { chainStop(); V.clearRelease(); }   // 离开沉浸页即打断自动朗读
     if (view === "home") renderHome();
     if (view === "favs") renderFavs();
     if (view === "map") renderMap();
@@ -1449,7 +1376,9 @@
    * ------------------------------------------------------------ */
   K.storyDone = "riyu.storyDone";
   var STORIES = window.RIYU_STORY || {};
-  var story = { id: null, si: 0, j: 0, zhOn: true };
+  /* playedSteps：哪一步已经自动念过店员台词（键 = "情景id#幕:步"）。
+     用户要求「同一场景不要自动重复播放，再听一次才重播」，这份记录就是判据。 */
+  var story = { id: null, si: 0, j: 0, zhOn: true, playedSteps: {} };
   var storyDone = loadJson(K.storyDone, {});
   function saveStoryDone() { saveJson(K.storyDone, storyDone); }
   function firstStory() { for (var k in STORIES) return STORIES[k]; return null; }
@@ -1500,6 +1429,10 @@
     if (!st) { toast("还没有真实情景内容。"); return; }
     story.id = st.id; story.si = 0; story.j = 0; story.zhOn = true; story.voiceOn = true;
     story.usedRepeat = false;    // 完成页的「请再说一遍」那一项按本次走的结果算
+    /* 重新进这一次，每一句都该重新开口 —— 去重只在「同一次走」里生效。
+       不清空的话，退出再进来会静悄悄一片（playedSteps 是上一轮的）。 */
+    story.playedSteps = {};
+    preloadStoryImages(st);      // 六张图先预热，切幕时才不会边解码边掉帧
     nav("story");
     renderStory();
   }
@@ -1513,6 +1446,16 @@
     var stage = $("#storyStage"); if (!stage) return;
     stage.appendChild(node);
   }
+  /* 把刚追加的内容带进视野。
+     原来每追加一次就 window.scrollTo(0, document.body.scrollHeight)：
+     读 scrollHeight 会强制浏览器立刻重算版面（强制同步布局），一步里叠好几次
+     就掉帧——这是切幕卡顿的主要来源。改成对目标元素 scrollIntoView：
+     一次调用，不用先量高度，也只带动必要的重排。 */
+  function scrollToLast(node) {
+    if (!node) return;
+    try { node.scrollIntoView({ block: "end" }); }
+    catch (e) { try { node.scrollIntoView(false); } catch (e2) {} }
+  }
   /* 整句可点朗读的句子块 */
   function sSay(ja) {
     var s = el("div", "say");
@@ -1521,18 +1464,43 @@
     s.setAttribute("aria-label", "朗读：" + (ja || ""));
     s.appendChild(document.createTextNode(ja || ""));
     s.appendChild(el("span", "say-ic", "🔊"));
-    s.addEventListener("click", function () { if (chainBusy) return; playSentence(s, ja); });
+    s.addEventListener("click", function () { if (V.busy()) return; playSentence(s, ja); });
     s.addEventListener("keydown", function (ev) {
-      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); if (chainBusy) return; playSentence(s, ja); }
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); if (V.busy()) return; playSentence(s, ja); }
     });
     return s;
   }
   function sRd(t) { return el("div", "s-rd", t); }
   function sZh(t) { return el("div", "s-zh", t); }
+  /* 插画的原始尺寸。进剧情时 preloadStoryImages() 把本情景用到的图一次性
+     预热，顺手把 naturalWidth/Height 记在这里；渲染 <img> 时写回 width/height，
+     浏览器就能在图还没解码完时先把位置留好 —— 图出来时下面的内容不会被顶下去。
+     没预加载过就写不上属性，退化成原来的行为，不会出错。 */
+  var IMG_NATURAL = {};
+  function preloadStoryImages(st) {
+    if (!st || !st.scenes) return;
+    var seen = {}, srcs = [];
+    function add(s) { if (s && !seen[s]) { seen[s] = 1; srcs.push(s); } }
+    add(st.cover);
+    st.scenes.forEach(function (sc) {
+      add(sc.img);
+      (sc.steps || []).forEach(function (sp) {
+        (sp.opts || []).forEach(function (o) { add(o.img); });
+      });
+    });
+    srcs.forEach(function (src) {
+      var im = new Image();
+      im.onload = function () { IMG_NATURAL[src] = [im.naturalWidth, im.naturalHeight]; };
+      im.src = src;
+    });
+  }
   function sFigure(src, alt) {
     var f = el("figure", "sceneimg");
     var im = el("img");
     im.src = src; im.alt = alt || "场景插画"; im.loading = "lazy";
+    im.decoding = "async";
+    var nat = IMG_NATURAL[src];
+    if (nat) { im.width = nat[0]; im.height = nat[1]; }
     im.onerror = function () { f.classList.add("imgmiss"); };
     f.appendChild(im);
     return f;
@@ -1561,41 +1529,22 @@
    * 你的回应：送出气泡 → 短暂思考“…” → 店员回应句逐句朗读 → 才进下一步。
    * 自动朗读进行中，手动点读句子被忽略，避免互相打断时序。
    * ------------------------------------------------------------ */
-  var chainTok = 0;      // 每次 开始/打断 递增，作废上一次链的迟到回调
-  var chainBusy = false; // 此刻是否有自动朗读在跑（点读期间保护时序）
-  var autoRelease = null; // 当前自动朗读被打断时应执行的“放行”动作
+  /* v6：自动朗读的链、打断、放行都搬到了 js/voice.js，
+     这里只留「什么时候该开口」这个属于本页的判断，并把它交给语音模块。
+     下面这几个薄封装保持原函数名，调用点一行都不用改。 */
   function autoOn() { return !!(story.voiceOn && !document.body.classList.contains("noVoice")); }
-  function chainStop() {
-    chainTok++; chainBusy = false;
-    if (window.speechSynthesis) speechSynthesis.cancel();
-    stopSay();
-  }
-  /* seq: [{node,text,show?}]；播完(或被新链/打断取代)后调 done */
-  function chainPlay(seq, done) {
-    chainStop();
-    chainBusy = true;
-    var tok = chainTok;
-    var i = 0;
-    function next() {
-      if (tok !== chainTok || !chainBusy) return;      // 已被打断/替换
-      if (i < seq.length && autoOn()) {
-        var it = seq[i++];
-        if (typeof it.show === "function") it.show();
-        playSentence(it.node, it.text, next);
-      } else {
-        chainBusy = false;
-        if (typeof done === "function") done();
-      }
-    }
-    next();
-  }
-  function killAuto() {
-    if (autoRelease) { var f = autoRelease; autoRelease = null; chainStop(); f(); }
-  }
+  V.gate = autoOn;                          // 语音模块每念一句都会问一次：现在该出声吗
+  /* 进新的一幕/一步后，等这么久再让店员开口（用户给的范围是 300–500ms）。
+     太短还是「啪」一下砸出来，太长显得迟钝。等待期间画面已经画好、滚动也停稳了。 */
+  var NPC_DELAY_MS = 420;
+  function chainStop() { V.stop(); }        // 停声 + 去高亮 + 作废这条链剩下的句子
+  /* seq: [{node,text,show?}]；delayMs > 0 时先等一会儿再开口 */
+  function chainPlay(seq, done, delayMs) { V.chain(seq, done, delayMs); }
+  function killAuto() { V.release(); }      // 打断并执行「放行」动作（把选项放出来）
 
   /* ---- 主流程 ---- */
   function renderStory() {
-    chainStop(); autoRelease = null;                 // 重绘前打断任何进行中的自动朗读
+    chainStop(); V.clearRelease();                 // 重绘前打断任何进行中的自动朗读
     story.gen = (story.gen || 0) + 1;                // 世代号：作废迟到的异步节拍
     var stage = $("#storyStage"); if (!stage) return;
     stage.innerHTML = "";
@@ -1684,12 +1633,23 @@
     var box = el("div", "sopts");
     (step.opts || []).forEach(function (o) { box.appendChild(sOpt(o)); });
     block.appendChild(box);
-    var stg = $("#storyStage"); if (stg) stg.scrollTop = stg.scrollHeight;
-    window.scrollTo(0, document.body.scrollHeight);
-    /* v3.5：店员开场句自动逐句朗读，读完(或被跳过)才放行你的选项 */
+    scrollToLast(block);
+
+    /* 同一步只自动开口一次。返回/重绘回到这一步时不再自动念 ——
+       想再听，点句子上的 🔊 或「↺ 重听」。（用户明确要求的「再听一次才重播」） */
+    var stepKey = st.id + "#" + i + ":" + j;
+    var alreadyPlayed = story.playedSteps[stepKey];
+    story.playedSteps[stepKey] = 1;
+
+    /* 已经念过，或本来就关着声音：直接放行你的回合，不出声 */
+    if (alreadyPlayed || !autoOn()) {
+      ask.classList.add("go"); box.classList.add("go");
+      return;
+    }
+    /* 剩余情况：先让这一步画完、滚动停稳，等 NPC_DELAY_MS 再让店员开口 */
     playNpc(block, npcBox, npcLines, ask, function () {
       ask.classList.add("go"); box.classList.add("go");
-    });
+    }, NPC_DELAY_MS);
   }
 
   /* 店员句的逐句朗读：说一句亮一句，读完（或被跳过）后放行。
@@ -1698,20 +1658,20 @@
 
      anchor    「重听 / 跳过」条插到哪个子节点前面（必须是 block 的孩子；没有就贴到底）
      onRelease 播放结束或被跳过之后调用。首次进步骤时传的是「把选项区放行」；
-               重说时不需要 —— 选项本来就没锁。 */
-  function playNpc(block, npcBox, npcLines, anchor, onRelease) {
+               重说时不需要 —— 选项本来就没锁。
+     delayMs   等这么久再开口（0 = 立刻）。等待由语音模块持有，切场景会被一并取消。 */
+  function playNpc(block, npcBox, npcLines, anchor, onRelease, delayMs) {
     if (!block || !npcBox || !autoOn()) return;
     var rows = npcBox.querySelectorAll(".sline");
-    for (var q = 0; q < rows.length; q++) rows[q].classList.add("sayrow");   // 说一句亮一句
+    /* v6：台词先整块亮出来，再等 delayMs 让声音进来。
+       原来是一句一句亮、声音紧跟着砸出来：等待时屏幕上什么都没有，一出声又太突兀。
+       现在是「先看清 → 再出声」，中间那几百毫秒正好给眼睛。 */
+    for (var q = 0; q < rows.length; q++) rows[q].classList.add("sayrow", "on");
     var seq = [];
     for (var r = 0; r < rows.length; r++) (function (idx) {
       seq.push({
         node: rows[idx].querySelector(".say"),
-        text: (npcLines[idx] && npcLines[idx].ja) || "",
-        show: function () {
-          rows[idx].classList.add("on");
-          window.scrollTo(0, document.body.scrollHeight);
-        }
+        text: (npcLines[idx] && npcLines[idx].ja) || ""
       });
     })(r);
     block.classList.add("saying");
@@ -1726,17 +1686,17 @@
     var released = false;
     function releaseStep() {
       if (released) return; released = true;
-      autoRelease = null;
+      V.clearRelease();
       block.classList.remove("saying");
       if (bar.parentNode) bar.parentNode.removeChild(bar);
       for (var a = 0; a < rows.length; a++) rows[a].classList.add("on");
       if (onRelease) onRelease();
-      window.scrollTo(0, document.body.scrollHeight);
+      scrollToLast(block);
     }
-    autoRelease = releaseStep;
+    V.setRelease(releaseStep);
     reB.addEventListener("click", function () { chainPlay(seq, releaseStep); });   // 重听：重头再来
     skB.addEventListener("click", function () { killAuto(); });                    // 跳过：打断并放行
-    chainPlay(seq, releaseStep);
+    chainPlay(seq, releaseStep, delayMs);
   }
 
   /* 「我没听懂」回合：你说一句请对方再说一遍 → 店员原样重说一遍 →
@@ -1759,7 +1719,7 @@
     var you = sLine("you", { ja: o.ja, rd: o.rd, zh: o.zh });
     you.classList.add("you-commit");
     stagePush(you);
-    window.scrollTo(0, document.body.scrollHeight);
+    scrollToLast(you);
 
     /* 店员重说：单开一块，保留前面的对话记录。不像「重来」那样清屏 ——
        用户要看见「我说了 → 他又说了一遍」这个因果。 */
@@ -1770,9 +1730,10 @@
     var tip = el("p", "srepeat-tip", "店员放慢又说了一遍。这次听清了吗？");
     block.appendChild(tip);
     stagePush(block);
-    window.scrollTo(0, document.body.scrollHeight);
+    scrollToLast(block);
 
-    playNpc(block, again, step.npc || [], tip, null);
+    /* 这一步是用户自己按「我没听懂」叫出来的，只留一点点缓冲就重说 */
+    playNpc(block, again, step.npc || [], tip, null, 200);
   }
 
   function sOpt(o) {
@@ -1828,7 +1789,7 @@
     var you = sLine("you", { ja: o.ja, rd: o.rd, zh: o.zh });
     you.classList.add("you-commit");
     stagePush(you);
-    window.scrollTo(0, document.body.scrollHeight);
+    scrollToLast(you);
     /* 店员回应（图/店员句/旁白）随后登场：先给一个“思考”节拍 */
     var beat = el("div", "sbeat ok");
     if (o.img) beat.appendChild(sFigure(o.img, ""));
@@ -1844,28 +1805,27 @@
     var moved = false;
     function goNext() {
       if (moved || gen !== story.gen) return; moved = true;
-      autoRelease = null;
+      V.clearRelease();
       chainStop();
       var scn = st.scenes[story.si];
       if (story.j + 1 < scn.steps.length) stepBegin(story.si, story.j + 1);
       else sceneEnd(story.si);
-      window.scrollTo(0, document.body.scrollHeight);
     }
     if (!hasBeat) { goNext(); return; }
     var think = el("div", "sbeat think", "…");
     stagePush(think);
-    window.scrollTo(0, document.body.scrollHeight);
+    scrollToLast(think);
     window.setTimeout(function () {
       if (gen !== story.gen) return;               // 已重来/离开，不再登场
       if (think.parentNode) think.parentNode.removeChild(think);
       stagePush(beat);
-      window.scrollTo(0, document.body.scrollHeight);
+      scrollToLast(beat);
       var seq = [];
       for (var k = 0; k < replyRows.length; k++) (function (idx) {
         seq.push({ node: replyRows[idx].querySelector(".say"), text: (o.say[idx] && o.say[idx].ja) || "" });
       })(k);
       if (seq.length && autoOn()) {
-        autoRelease = goNext;
+        V.setRelease(goNext);
         chainPlay(seq, goNext);
       } else {
         goNext();
@@ -1910,7 +1870,7 @@
     });
     card.appendChild(nb);
     stagePush(card);
-    window.scrollTo(0, document.body.scrollHeight);
+    scrollToLast(card);
   }
 
   /* 整段情景完成：任务完成总结（检查清单 + 用到的日语 + 发音 + 生活 Tip） */
@@ -1995,7 +1955,7 @@
     row.appendChild(r1); row.appendChild(r2);
     fin.appendChild(row);
     stagePush(fin);
-    window.scrollTo(0, document.body.scrollHeight);
+    scrollToLast(fin);
   }
 
   /* 完成页末尾的「还有更多场景」。
@@ -3518,6 +3478,7 @@
     if (!window.confirm("确定重置全部学习数据吗？（进度、生词本、设置都会清空）")) return;
     Object.keys(K).forEach(function (k) { try { localStorage.removeItem(K[k]); } catch (e) {} });
     state.settings = { showZh: false, rate: 0.95, unlockAll: false };
+    V.setRate(state.settings.rate);
     state.favs = [];
     state.prog = {};
     state.filter = null;
@@ -3653,6 +3614,7 @@
     $("#rateRange").addEventListener("input", function () {
       state.settings.rate = parseFloat(this.value);
       saveSettings();
+      V.setRate(state.settings.rate);   // 语速归语音模块管，改完立刻告诉它
       $("#rateVal").textContent = state.settings.rate.toFixed(2).replace(/0$/, "") + "×";
     });
     $("#setZh").addEventListener("change", function () { state.settings.showZh = this.checked; saveSettings(); });
@@ -3673,6 +3635,7 @@
 
   /* ---------------- 启动 ---------------- */
   function boot() {
+    V.setRate(state.settings.rate);   // 本机存的语速交给语音模块（它默认 0.95）
     /* 注意：scenarios 为空**不再是错误**——主线正文在 js/paid/，公开访客
        拿不到，那是预期状态，首页会渲染成 25 张锁定卡片。只有聚合器本身
        没加载（js/data.js 丢了）才是真的坏了。 */

@@ -17,7 +17,7 @@
  *   本文件自然也不生效——那不是 bug，是浏览器的规定。
  * ============================================================ */
 
-var VERSION = "v2";
+var VERSION = "v3";
 var CACHE = "riyu-shell-" + VERSION;
 
 /* 公开静态外壳：全部是「扒源码也看得到」的东西，不含任何付费正文 */
@@ -35,12 +35,16 @@ var SHELL = [
   "./js/content/phrases.js",
   "./js/story/cafe.js",
 
-  "./img/cafe/scene-01.svg",
-  "./img/cafe/scene-02.svg",
-  "./img/cafe/scene-03.svg",
-  "./img/cafe/scene-04.svg",
-  "./img/cafe/scene-05.svg",
-  "./img/cafe/scene-06.svg",
+  "./js/voice.js",
+
+  /* 咖啡店六幕插画（日系动漫风）。原图约 400×615，页面上任何地方都
+     不许把它们放大到 400px 以上 —— CSS 里已限宽，见 .sceneimg img。 */
+  "./img/cafe/scene-01.jpg",
+  "./img/cafe/scene-02.jpg",
+  "./img/cafe/scene-03.jpg",
+  "./img/cafe/scene-04.jpg",
+  "./img/cafe/scene-05.jpg",
+  "./img/cafe/scene-06.jpg",
 
   /* index.html 的 <link rel="icon"> 指向 icon-any.svg，
      不列进来离线打开时地址栏图标会 404（页面本身没事，但没必要缺这一条） */
