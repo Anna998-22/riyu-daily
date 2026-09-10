@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>にほんの旅 · 去日本，不怕开口</title>
+  <meta name="description" content="日本旅行与求学实战日语：离线、随开随用、进度保存。真实场景对话 + 整句朗读 + 语言急救包 + 必要单词。">
+
+  <!-- ---- PWA（阶段 6）：只是「Web 的打开方式」升级，不改产品结构 ---- -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="icon" type="image/svg+xml" href="img/icon/icon-any.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/icon/icon-192.png">
+  <link rel="apple-touch-icon" href="img/icon/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="にほんの旅">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="">
+
+  <!-- ================= 桌面端左栏（手机端整块 display:none） =================
+       品牌名与 PWA 名称见 manifest.json —— 改名前请一并改。 -->
+  <aside class="sidebar" id="sidebar">
+    <div class="side-brand">
+      <span class="logo" aria-hidden="true">📚</span>
+      <div class="brandtext">
+        <h1>にほんの旅</h1>
+        <p class="sub">去日本，不怕开口</p>
+      </div>
+    </div>
+    <!-- app.js 的 buildSidebar() 会把 #tabBar 里的 .tb 逐个克隆进来。
+         导航项因此只有一份来源（底部 tab），不会两边各写一份。 -->
+    <nav class="sidenav" id="sideNav" aria-label="主导航（桌面）"></nav>
+  </aside>
+
+  <!-- ================= 顶部导航 ================= -->
+  <header class="topbar">
+    <!-- 品牌名与左栏、manifest.json 三处必须一致，改一处就要一起改 -->
+    <div class="brand" data-nav="home" role="button" tabindex="0" title="回到首页">
+      <span class="logo" aria-hidden="true">📚</span>
+      <div class="brandtext">
+        <h1>にほんの旅</h1>
+        <p class="sub">去日本，不怕开口</p>
+      </div>
+    </div>
+    <nav class="mainnav">
+      <button class="navbtn" data-nav="home">情景</button>
+      <button class="navbtn" data-nav="favs">生词本 <span class="count" id="favCount">0</span></button>
+      <button class="iconbtn" id="btnSettings" title="设置" aria-label="设置">⚙</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ================= 首页：主线 + 情景列表 ================= -->
+    <section id="viewHome" class="view">
+
+      <!-- ---- 品牌 hero（v4） ---- -->
+      <div class="brandhero">
+        <div class="bh-art" aria-hidden="true">
+          <svg viewBox="0 0 360 128" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="bhSky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#DCEBF0"/><stop offset="1" stop-color="#F5F8F6"/>
+              </linearGradient>
+              <linearGradient id="bhLake" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#B6DCDA"/><stop offset="1" stop-color="#DCEDEC"/>
+              </linearGradient>
+            </defs>
+            <rect width="360" height="128" fill="url(#bhSky)"/>
+            <!-- 云 -->
+            <ellipse cx="76" cy="32" rx="26" ry="7" fill="#fff" opacity=".75"/>
+            <ellipse cx="99" cy="28" rx="17" ry="6" fill="#fff" opacity=".75"/>
+            <ellipse cx="288" cy="60" rx="20" ry="5.5" fill="#fff" opacity=".6"/>
+            <!-- 中国 → 日本 航线 -->
+            <path d="M14 98 Q120 30 272 26" fill="none" stroke="#8FC4CC"
+                  stroke-width="1.6" stroke-dasharray="6 6" stroke-linecap="round"/>
+            <path d="M272 26 l-13 5.5 4.5-5.5 -4.5-5.5 z" fill="#3D6BA8"/>
+            <!-- 富士山 -->
+            <path d="M138 116 L232 34 L326 116 Z" fill="#3D6BA8" opacity=".88"/>
+            <path d="M203 61 L232 34 L261 61 L251 55.5 L241 64 L232 57 L223 64 L213 55.5 Z"
+                  fill="#fff" opacity=".96"/>
+            <!-- 湖 -->
+            <rect y="106" width="360" height="22" fill="url(#bhLake)"/>
+            <path d="M138 116 L232 106 L326 116 Z" fill="#3D6BA8" opacity=".14"/>
+            <!-- 鸟居 -->
+            <g fill="#2C4A6E">
+              <rect x="26" y="62" width="52" height="7" rx="3.5"/>
+              <rect x="33" y="74" width="38" height="4.5" rx="2"/>
+              <rect x="36" y="88" width="32" height="4" rx="2"/>
+              <rect x="34" y="66" width="7" height="52"/>
+              <rect x="63" y="66" width="7" height="52"/>
+              <rect x="48" y="74" width="6" height="14"/>
+            </g>
+            <!-- 水面没过鸟居柱脚 -->
+            <rect y="106" width="360" height="22" fill="url(#bhLake)" opacity=".55"/>
+          </svg>
+        </div>
+        <div class="bh-body">
+          <span class="bh-kicker">🇯🇵 真实场景日语</span>
+          <h2>去日本，<br>不怕开口。</h2>
+          <p class="bh-sub">提前练会你在日本真正会用到的话。</p>
+          <div class="bh-tags"><span>纯离线</span><span>随开随用</span><span>进度存本机</span></div>
+        </div>
+      </div>
+
+      <!-- ---- ① 今日推荐 / 继续学习（内容由 renderToday() 填） ---- -->
+      <div class="homecard todaycard">
+        <div class="hc-head">
+          <span class="hc-title">🔥 今日推荐</span>
+          <button class="linkbtn" data-nav="map">全部场景 →</button>
+        </div>
+        <!-- 免费体验的入口沿用原来的 storyGate 结构（封面/标题/开场都是现成的） -->
+        <div id="storyGate" class="storygate" hidden>
+          <div class="sg-media"><img id="sgCover" src="img/cafe/scene-01.svg" alt="咖啡店场景插画"></div>
+          <div class="sg-body">
+            <div class="sg-tags"><span class="tag accent">真实情景 · 沉浸式</span><span id="sgDone" class="tag pass" hidden>✅ 已完成</span></div>
+            <h3 id="sgTitle">咖啡店点单 <em id="sgTitleJa">かふぇで ちゅうもん</em></h3>
+            <p class="muted" id="sgStart">不是背课文：你走进日本咖啡店，听懂店员、开口回应，一步步把单点完。</p>
+            <button class="bigbtn" id="btnStoryCafe">🎬 开始体验</button>
+          </div>
+        </div>
+        <!-- 咖啡店走完之后，这里改推「推荐路线的下一关」 -->
+        <div id="todayAlt" class="todayalt" hidden></div>
+      </div>
+
+      <!-- ---- ② 我的学习进度（环形 + 四行细分 + 出发倒计时） ---- -->
+      <div class="homecard progcard" id="progCard"></div>
+
+      <!-- ---- ③ 旅行篇 / 求学篇入口（与场景地图用同一个渲染函数） ---- -->
+      <div class="packentry" id="packEntry"></div>
+
+      <!-- ---- ④ 旅行篇 · 推荐路线（25 关，原有内容保留） ---- -->
+      <div class="hero">
+        <h2>🚩 旅行篇 · 推荐路线</h2>
+        <p id="heroNote">正文用纯平假名，专为刚入门、想开口的你设计。25 关由易到难，一关一关往上走。</p>
+
+        <div id="mainline" class="mainline" hidden>
+          <div class="ml-head">
+            <span class="ml-title">闯关进度 <em>· 从易到难</em></span>
+            <span class="ml-info" id="mlInfo"></span>
+          </div>
+          <div class="ml-bar">
+            <div class="ml-track"><i id="mlFill"></i></div>
+            <span class="ml-pct" id="mlPct">0%</span>
+          </div>
+          <p class="ml-note muted small" id="mlNote"></p>
+        </div>
+
+        <ul class="hint">
+          <li><span class="ic">🗺️</span><span><b>闯关解锁</b>：通过上一关，才能进入下一关（设置里可一键全开）</span></li>
+          <li><span class="ic">🖍️</span><span><b>重点名词</b>带色标注，点它弹出中文词卡并朗读</span></li>
+          <li><span class="ic">🎧</span><span><b>跟读对比</b>：先听示范，再录音回放，和原音比一比</span></li>
+        </ul>
+      </div>
+
+      <div id="filterRow" class="filterrow" hidden>
+        <span class="f-lbl">难度筛选：</span>
+        <span id="fChips" class="fchips"></span>
+      </div>
+
+      <div id="grid" class="grid"></div>
+
+      <!-- ---- ⑥ 热门场景（降权：排在路线之后，标题收小） ---- -->
+      <div class="hotwrap hotwrap-dim" id="hotWrap">
+        <div class="hot-head">
+          <h3>热门场景</h3>
+          <button class="linkbtn" data-nav="map">更多场景 🔒</button>
+        </div>
+        <div class="hotscroll" id="hotScroll"></div>
+      </div>
+
+      <!-- ---- ⑦ 语言急救包（原「救命句」，改名后入口更醒目） ---- -->
+      <button class="quickbar" data-nav="phrases">
+        <span class="qb-ic">🆘</span>
+        <span class="qb-tb">
+          <b>语言急救包</b>
+          <span>开不了口的时候，递屏幕也能用</span>
+        </span>
+        <span class="qb-go">›</span>
+      </button>
+
+      <!-- ---- 常用入口 ---- -->
+      <div class="quickrow">
+        <button class="quick" data-nav="words">
+          <span class="q-ic">📖</span><span class="q-tx">必要单词</span>
+        </button>
+        <button class="quick" data-nav="memo">
+          <span class="q-ic">⭐</span><span class="q-tx">我的备忘录</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= 真实情景（沉浸式）视图 ================= -->
+    <section id="viewStory" class="view" hidden>
+      <button id="btnStoryBack" class="backbtn">← 返回</button>
+      <div id="storyStage"></div>
+    </section>
+
+    <!-- ================= 情景学习（学习/跟读/测验） ================= -->
+    <section id="viewScenario" class="view" hidden>
+      <button id="btnBack" class="backbtn">← 返回情景列表</button>
+      <div id="scenHead" class="scenhead"></div>
+
+      <div class="toggles" id="toggles">
+        <label class="switch">
+          <input type="checkbox" id="tglZh">
+          <span>中文翻译</span>
+        </label>
+        <span class="spacer"></span>
+        <div class="tabs" id="scenTabs" role="tablist">
+          <button class="tab active" data-stab="learn">学习</button>
+          <button class="tab" data-stab="shadow">跟读</button>
+          <button class="tab" data-stab="quiz">测验</button>
+        </div>
+      </div>
+
+      <div id="scenBody"></div>
+    </section>
+
+    <!-- ================= 生词本 ================= -->
+    <section id="viewFavs" class="view" hidden>
+      <div class="pagehead">
+        <h2>⭐ 我的生词本</h2>
+        <p class="muted">你在学习中收藏的句子都在这里，可朗读或取消收藏。</p>
+      </div>
+      <div class="toolbar-line">
+        <span class="muted" id="favEmptyNote"></span>
+        <span class="spacer"></span>
+        <button class="btn ghost danger" id="btnClearFavs">清空生词本</button>
+      </div>
+      <ul id="favList" class="favlist"></ul>
+    </section>
+
+    <!-- ================= 场景地图 ================= -->
+    <section id="viewMap" class="view" hidden>
+      <div class="pagehead">
+        <h2>🗾 场景地图</h2>
+        <p class="muted">按真实生活的顺序排好的场景，一处一处走完。</p>
+      </div>
+      <div id="mapBody"></div>
+    </section>
+
+    <!-- ================= 旅行篇 / 求学篇（单篇全屏列表） ================= -->
+    <section id="viewTravel" class="view" hidden>
+      <button class="backbtn" data-nav="map">← 返回场景地图</button>
+      <div id="travelBody"></div>
+    </section>
+
+    <section id="viewStudy" class="view" hidden>
+      <button class="backbtn" data-nav="map">← 返回场景地图</button>
+      <div id="studyBody"></div>
+    </section>
+
+    <!-- ================= 场景详情 ================= -->
+    <section id="viewScene" class="view" hidden>
+      <button class="backbtn" id="btnSceneBack">← 返回</button>
+      <div id="sceneBody"></div>
+    </section>
+
+    <!-- ================= 语言急救包（半开放） ================= -->
+    <section id="viewPhrases" class="view" hidden>
+      <button class="backbtn" data-nav="home">← 返回首页</button>
+      <div class="pagehead">
+        <h2>🆘 语言急救包</h2>
+        <p class="muted">开不了口的时候，把屏幕递过去也行。</p>
+      </div>
+      <div id="phrBody"></div>
+    </section>
+
+    <!-- ================= 必要单词 ================= -->
+    <section id="viewWords" class="view" hidden>
+      <button class="backbtn" data-nav="home">← 返回首页</button>
+      <div class="pagehead">
+        <h2>📖 必要单词</h2>
+        <p class="muted">按场景挑词：每个场景真正用得上的那 3~4 个，先记这些就够开口。</p>
+      </div>
+      <div id="wordBody"></div>
+    </section>
+
+    <!-- ================= 我的备忘录 ================= -->
+    <section id="viewMemo" class="view" hidden>
+      <button class="backbtn" data-nav="home">← 返回首页</button>
+      <div class="pagehead">
+        <h2>⭐ 我的备忘录</h2>
+        <p class="muted">你在语言急救包里 ⭐ 过的整句都在这儿，连读法一起。要记单个的词，去「必要单词」。</p>
+      </div>
+      <div id="memoBody"></div>
+    </section>
+
+    <!-- ================= 我的 ================= -->
+    <section id="viewMe" class="view" hidden>
+      <div class="pagehead">
+        <h2>👤 我的</h2>
+      </div>
+      <div id="meBody"></div>
+    </section>
+
+    <!-- ================= 购买页（纯 UI，不接支付） ================= -->
+    <section id="viewShop" class="view" hidden>
+      <button class="backbtn" data-nav="me">← 返回</button>
+      <div class="pagehead">
+        <h2>🔓 解锁全部场景</h2>
+        <p class="muted">一次买断，离线可用，不订阅、不自动续费。</p>
+      </div>
+      <div id="shopBody"></div>
+    </section>
+  </main>
+
+  <footer class="foot">にほんの旅 · 离线版 v3 —— 主线正文纯平假名，学习数据保存在本机，不联网、不上传。</footer>
+
+  <!-- ================= 桌面端右栏（手机端整块 display:none） =================
+       三块内容由 app.js 的 renderRail() 填：倒计时 / 今日建议 / 最近学习。
+       没有出发日期时不显示倒计时，不留空壳。 -->
+  <aside class="rail" id="rail" aria-label="学习概览"></aside>
+
+  <!-- ================= 底部导航（手机端 4 项；桌面端由 .sidebar 接管，见 css） =================
+       这里同时是桌面左栏的**唯一标记来源**：app.js 的 buildSidebar() 会把下面
+       每个 .tb 克隆进 #sideNav，所以加/改导航项只改这一处。 -->
+  <nav class="tabbar" id="tabBar" aria-label="主导航">
+    <button class="tb" data-nav="home" aria-label="首页">
+      <svg class="tb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>
+      <span class="tb-tx">首页</span>
+    </button>
+    <button class="tb" data-nav="map" aria-label="场景地图">
+      <svg class="tb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+      <span class="tb-tx">场景地图</span>
+    </button>
+    <button class="tb" data-nav="phrases" aria-label="语言急救包">
+      <svg class="tb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 7V5.6A1.6 1.6 0 0 1 10.8 4h2.4a1.6 1.6 0 0 1 1.6 1.6V7"/><rect x="3.4" y="7" width="17.2" height="12.6" rx="2.6"/><path d="M12 10.6v5.4M9.3 13.3h5.4"/></svg>
+      <span class="tb-tx">语言急救包</span>
+    </button>
+    <button class="tb" data-nav="me" aria-label="我的">
+      <svg class="tb-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c0-3.6 3.4-5.8 7.5-5.8s7.5 2.2 7.5 5.8"/></svg>
+      <span class="tb-tx">我的</span>
+    </button>
+  </nav>
+
+  <!-- ================= 底部名词词卡 ================= -->
+  <div id="vocabBar" class="vocabbar" hidden>
+    <div class="vb-inner">
+      <button class="vb-close" id="vbClose" title="关闭词卡" aria-label="关闭">✕</button>
+      <div class="vb-word">
+        <span class="vb-w" id="vbWord"></span>
+        <button class="vb-speak voiceonly" id="vbSpeak" title="朗读这个词" aria-label="朗读">🔊</button>
+      </div>
+      <div class="vb-read muted" id="vbRead"></div>
+      <div class="vb-mean" id="vbMean"></div>
+    </div>
+  </div>
+
+  <!-- ================= 轻提示 toast ================= -->
+  <div id="toast" class="toast" hidden></div>
+
+  <!-- ================= 设置抽屉 ================= -->
+  <div id="settingsOverlay" class="overlay" hidden>
+    <div class="sheet" role="dialog" aria-label="设置">
+      <div class="sheethead">
+        <h3>⚙ 设置</h3>
+        <button class="iconbtn" id="btnCloseSettings" aria-label="关闭">✕</button>
+      </div>
+      <div class="row">
+        <label for="rateRange">朗读语速：<strong id="rateVal">0.95×</strong></label>
+        <input type="range" id="rateRange" min="0.5" max="1.25" step="0.05" value="0.95">
+      </div>
+      <div class="row cols">
+        <label class="switch"><input type="checkbox" id="setZh"><span>默认显示中文翻译</span></label>
+      </div>
+      <div class="row">
+        <label class="switch"><input type="checkbox" id="setUnlock"><span>🔓 解锁全部关卡（自由练习）</span></label>
+      </div>
+      <div class="row">
+        <span class="muted">日语语音：</span>
+        <span id="voiceState">检测中…</span>
+      </div>
+      <div class="row">
+        <button class="btn ghost" id="btnResetData">重置全部学习数据</button>
+        <button class="btn ghost" id="btnClearFavs2">清空生词本</button>
+      </div>
+      <p class="muted small" id="aboutLine">离线版 v3 · 想增加情景或升级为「AI 自由对话练口语」可随时找我。</p>
+    </div>
+  </div>
+
+  <!-- 公开目录清单：只有关卡名，没有正文（正文在 js/paid/，不进仓库） -->
+  <script src="js/content/mainline-manifest.js"></script>
+  <script src="js/content/studyroute-manifest.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/content/registry.js"></script>
+  <script src="js/content/phrases.js"></script>
+  <script src="js/entitlement.js"></script>
+  <script src="js/story/cafe.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    /* PWA：Service Worker 只在 http(s) 下注册。
+       file:// 双击打开时浏览器不允许注册，跳过即可——功能一切照旧，
+       只是没有离线缓存（本来双击打开就是本地文件，也不需要缓存）。 */
+    if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js")["catch"](function () {
+          /* 注册失败不影响任何功能，静默即可 */
+        });
+      });
+    }
+  </script>
+</body>
+</html>

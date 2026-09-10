@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="走进咖啡店">
+  <!-- ================= 背景：店内暖墙 + 地板 ================= -->
+  <rect x="0" y="0" width="640" height="250" fill="#F7E9DB"/>
+  <rect x="0" y="244" width="640" height="12" fill="#F0DDC9"/>
+  <rect x="0" y="256" width="640" height="224" fill="#EBD3BC"/>
+  <line x1="0" y1="334" x2="640" y2="334" stroke="#E0C5A9" stroke-width="2"/>
+  <line x1="0" y1="420" x2="640" y2="420" stroke="#E0C5A9" stroke-width="2"/>
+
+  <!-- ================= 左：拱窗，窗外樱花 ================= -->
+  <path d="M70 138 V180 H170 V138 A50 50 0 0 0 70 138 Z" fill="#E4EFF3"/>
+  <path d="M70 138 V180 H170 V138 A50 50 0 0 0 70 138 Z" fill="none" stroke="#C69B7A" stroke-width="11"/>
+  <!-- 窗外花瓣 -->
+  <g fill="#D6E6EE">
+    <ellipse cx="104" cy="112" rx="5" ry="3.2" transform="rotate(-30 104 112)"/>
+    <ellipse cx="136" cy="96" rx="4.4" ry="2.8" transform="rotate(18 136 96)"/>
+    <ellipse cx="148" cy="128" rx="4" ry="2.6" transform="rotate(-8 148 128)"/>
+  </g>
+  <!-- 窗台小绿植 -->
+  <rect x="66" y="188" width="108" height="7" rx="3" fill="#C69B7A"/>
+  <ellipse cx="98" cy="187" rx="8" ry="4" fill="#B08B6B"/>
+  <path d="M96 186 q-6 -12 2 -18 M100 186 q6 -14 -2 -20" stroke="#6E9B6E" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- ================= 右：MENU 看板 ================= -->
+  <rect x="420" y="58" width="130" height="118" rx="12" fill="#E8C9A9"/>
+  <rect x="438" y="74" width="94" height="88" rx="8" fill="#FFFDF8"/>
+  <ellipse cx="485" cy="94" rx="7" ry="3" fill="#3898A0"/>
+  <path d="M477 94 v9 a8 8 0 0 0 16 0 v-9" fill="none" stroke="#3898A0" stroke-width="3.4" stroke-linecap="round"/>
+  <rect x="456" y="118" width="58" height="7" rx="3.5" fill="#EDDFCE"/>
+  <rect x="456" y="132" width="44" height="7" rx="3.5" fill="#EDDFCE"/>
+  <rect x="456" y="146" width="52" height="7" rx="3.5" fill="#EDDFCE"/>
+
+  <!-- ================= 头顶吊灯（左 + 右） ================= -->
+  <g>
+    <line x1="272" y1="0" x2="272" y2="150" stroke="#C9A184" stroke-width="3"/>
+    <path d="M256 150 h32 l-4 20 h-24 z" fill="#3D6BA8"/>
+    <circle cx="272" cy="172" r="7" fill="#FFE7C2"/>
+    <circle cx="272" cy="176" r="34" fill="#FFE9C6" opacity="0.28"/>
+  </g>
+  <g>
+    <line x1="600" y1="0" x2="600" y2="130" stroke="#C9A184" stroke-width="3"/>
+    <path d="M586 130 h28 l-3.5 18 h-21 z" fill="#3D6BA8"/>
+    <circle cx="600" cy="150" r="6.5" fill="#FFE7C2"/>
+    <circle cx="600" cy="154" r="30" fill="#FFE9C6" opacity="0.26"/>
+  </g>
+
+  <!-- ================= 远柜台 + 店員（迎客） ================= -->
+  <!-- 柜台面板与前台面 -->
+  <g>
+    <!-- 店员：在柜台后露出上半身 -->
+    <!-- 发 -->
+    <ellipse cx="470" cy="212" rx="27" ry="30" fill="#5A434A"/>
+    <ellipse cx="470" cy="206" rx="14" ry="9" fill="#7A5A5F" opacity="0.7"/>
+    <!-- 脸 -->
+    <ellipse cx="470" cy="221" rx="16.5" ry="15.5" fill="#F6CBAF"/>
+    <!-- 眉 -->
+    <line x1="459" y1="216" x2="465" y2="215" stroke="#8A5A52" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="475" y1="215" x2="481" y2="216" stroke="#8A5A52" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 眼 -->
+    <ellipse cx="463" cy="225" rx="3.4" ry="4.2" fill="#4A3438"/>
+    <ellipse cx="477" cy="225" rx="3.4" ry="4.2" fill="#4A3438"/>
+    <circle cx="464" cy="223.6" r="1" fill="#fff"/>
+    <circle cx="478" cy="223.6" r="1" fill="#fff"/>
+    <!-- 笑 -->
+    <path d="M465 233 Q470 237 475 233" fill="none" stroke="#B0654A" stroke-width="2" stroke-linecap="round"/>
+    <!-- 脸颊晕 -->
+    <ellipse cx="458" cy="230" rx="4.6" ry="2.6" fill="#EEA3A0" opacity="0.65"/>
+    <ellipse cx="482" cy="230" rx="4.6" ry="2.6" fill="#EEA3A0" opacity="0.65"/>
+    <!-- 上衣（衬衫） -->
+    <path d="M442 246 Q470 230 498 246 L506 300 Q470 314 434 300 Z" fill="#F2E7DC"/>
+    <!-- 围裙 -->
+    <path d="M444 250 Q470 242 496 250 L490 306 Q470 314 450 306 Z" fill="#3D6BA8"/>
+    <rect x="462" y="258" width="16" height="7" rx="3.5" fill="#3898A0"/>
+  </g>
+  <!-- 柜台前面板（盖住店员下部） -->
+  <rect x="356" y="320" width="250" height="160" rx="16" fill="#BE9A77"/>
+  <rect x="364" y="334" width="234" height="132" rx="12" fill="#B08B6B" opacity="0.35"/>
+  <rect x="342" y="302" width="278" height="20" rx="10" fill="#D3AC86"/>
+  <!-- 柜台上两小咖啡杯 -->
+  <g>
+    <ellipse cx="386" cy="303" rx="13" ry="4" fill="#C9A184"/>
+    <rect x="375" y="284" width="22" height="19" rx="4" fill="#FFFDF8"/>
+    <ellipse cx="386" cy="285" rx="11" ry="3.6" fill="#6E4A37"/>
+    <path d="M397 290 a6 6 0 0 1 0 7" fill="none" stroke="#FFFDF8" stroke-width="2.6"/>
+    <ellipse cx="430" cy="303" rx="13" ry="4" fill="#C9A184"/>
+    <rect x="419" y="284" width="22" height="19" rx="4" fill="#FFFDF8"/>
+    <ellipse cx="430" cy="285" rx="11" ry="3.6" fill="#6E4A37"/>
+    <path d="M441 290 a6 6 0 0 1 0 7" fill="none" stroke="#FFFDF8" stroke-width="2.6"/>
+  </g>
+
+  <!-- ================= 前景左下：你（背影，粉色外套）刚刚走进来 ================= -->
+  <g>
+    <!-- 外套（先画，被头发盖住一点） -->
+    <rect x="82" y="352" width="74" height="122" rx="30" fill="#3898A0"/>
+    <line x1="119" y1="372" x2="119" y2="474" stroke="#266C74" stroke-width="2.6" stroke-linecap="round" opacity="0.8"/>
+    <!-- 两臂垂在衣内，衣侧露出小手与袖口 -->
+    <path d="M86 436 q4 10 1 18" stroke="#266C74" stroke-width="2.6" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <path d="M152 436 q-4 10 -1 18" stroke="#266C74" stroke-width="2.6" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <ellipse cx="80" cy="450" rx="6.5" ry="8.5" fill="#F6CBAF"/>
+    <ellipse cx="158" cy="450" rx="6.5" ry="8.5" fill="#F6CBAF"/>
+    <!-- 斜挎小包（plum） -->
+    <line x1="150" y1="386" x2="124" y2="350" stroke="#3D6BA8" stroke-width="6" stroke-linecap="round"/>
+    <rect x="136" y="386" width="34" height="40" rx="11" fill="#3D6BA8"/>
+    <circle cx="153" cy="406" r="5.5" fill="#3898A0"/>
+    <!-- 及肩发（背影：整头头发） -->
+    <ellipse cx="118" cy="300" rx="40" ry="48" fill="#5A434A"/>
+    <path d="M80 288 q20 -26 42 -20 q4 14 -2 22 q-18 -8 -40 2 z" fill="#7A5A5F" opacity="0.6"/>
+    <!-- 发顶蝴蝶结（樱粉） -->
+    <g fill="#3898A0">
+      <path d="M118 252 l-14 -8 v16 z"/>
+      <path d="M118 252 l14 -8 v16 z"/>
+      <circle cx="118" cy="252" r="3.6" fill="#266C74"/>
+    </g>
+    <!-- 鞋尖 -->
+    <rect x="92" y="472" width="20" height="8" rx="4" fill="#5A434A"/>
+    <rect x="126" y="472" width="20" height="8" rx="4" fill="#5A434A"/>
+  </g>
+</svg>

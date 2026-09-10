@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="日语日常对话">
+  <title>日语日常对话</title>
+  <!--
+    遮蔽式图标（maskable）：底色满幅出血，图形全部收在中心 80% 安全圆内
+    （圆心 256,256，半径 204.8），这样被 Android 裁成圆形/水滴形都不会切到主体。
+    配色 = 站内 design token：米白底 + 青蓝主色，不引入新颜色。
+  -->
+  <rect width="512" height="512" fill="#F7F4EF"/>
+  <!-- 对话气泡：实心青蓝，块面大，缩到 48px 仍是清晰的实心色块 -->
+  <path d="M160 140 H352 A56 56 0 0 1 408 196 V316 A56 56 0 0 1 352 372
+           H250 L184 424 V372 H160 A56 56 0 0 1 104 316 V196 A56 56 0 0 1 160 140 Z"
+        fill="#3898A0"/>
+  <!-- 唯一的文字元素：一个假名，不构成「大段文字」 -->
+  <text x="256" y="316" text-anchor="middle"
+        font-family="'Yu Gothic UI','Hiragino Sans','Meiryo','Yu Gothic',sans-serif"
+        font-size="180" font-weight="700" fill="#FFFFFF">あ</text>
+</svg>

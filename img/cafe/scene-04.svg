@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="在店里喝">
+  <!-- ================= 墙面 + 踢脚线 ================= -->
+  <rect x="0" y="0" width="640" height="452" fill="#F7EADB"/>
+  <rect x="0" y="452" width="640" height="28" fill="#EFDECC"/>
+
+  <!-- ================= 大拱窗（窗内樱花） ================= -->
+  <path d="M180 236 V340 H460 V236 A140 140 0 0 0 180 236 Z" fill="#E9F0F2"/>
+  <path d="M180 236 V340 H460 V236 A140 140 0 0 0 180 236 Z" fill="none" stroke="#C69B7A" stroke-width="13"/>
+  <!-- 枝头樱花 -->
+  <path d="M196 116 C230 92 272 96 300 108 C286 86 258 70 232 74" stroke="#9A6A55" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <g fill="#C9DFE8">
+    <circle cx="218" cy="74" r="11"/><circle cx="236" cy="70" r="9"/>
+    <circle cx="252" cy="82" r="10"/><circle cx="236" cy="84" r="9"/>
+    <circle cx="214" cy="88" r="8"/><circle cx="296" cy="104" r="9"/><circle cx="288" cy="116" r="8"/>
+  </g>
+  <g fill="#D6E6EE">
+    <circle cx="244" cy="60" r="7"/><circle cx="268" cy="80" r="8"/><circle cx="306" cy="94" r="7"/>
+  </g>
+  <path d="M322 108 C348 98 372 106 392 120 C368 126 348 124 322 122" stroke="#9A6A55" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <g fill="#C9DFE8">
+    <circle cx="356" cy="104" r="8"/><circle cx="376" cy="112" r="9"/><circle cx="392" cy="120" r="7"/><circle cx="346" cy="116" r="7"/>
+  </g>
+  <!-- 玻璃中缝 -->
+  <line x1="320" y1="96" x2="320" y2="336" stroke="#F6ECE9" stroke-width="2.4" opacity="0.6"/>
+
+  <!-- ================= 右：吊灯 ================= -->
+  <line x1="552" y1="0" x2="552" y2="132" stroke="#C9A184" stroke-width="3"/>
+  <path d="M538 132 h28 l-3.6 19 h-20.8 z" fill="#3D6BA8"/>
+  <circle cx="552" cy="154" r="7" fill="#FFE7C2"/>
+  <circle cx="552" cy="158" r="32" fill="#FFE9C6" opacity="0.26"/>
+
+  <!-- ================= 圆桌 + 你的咖啡 ================= -->
+  <!-- 桌腿 -->
+  <rect x="304" y="450" width="13" height="30" rx="4" fill="#B08B6B"/>
+  <!-- 桌面（双椭圆表现厚桌面） -->
+  <ellipse cx="308" cy="440" rx="152" ry="37" fill="#CFA67D"/>
+  <ellipse cx="308" cy="438" rx="134" ry="31" fill="#E7C9A3"/>
+  <!-- 咖啡 -->
+  <g>
+    <ellipse cx="262" cy="418" rx="18" ry="5.6" fill="#D9B28B"/>
+    <rect x="246" y="384" width="32" height="34" rx="7" fill="#FFFDF8"/>
+    <ellipse cx="262" cy="385" rx="16" ry="4.8" fill="#6E4A37"/>
+    <path d="M278 392 a9 9 0 0 1 0 13" fill="none" stroke="#FFFDF8" stroke-width="3"/>
+    <path d="M256 374 q-4 -9 0 -14 M268 376 q4 -10 0 -15" stroke="#D8B79A" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- 小甜品（樱色马卡龙） -->
+  <g>
+    <ellipse cx="356" cy="424" rx="15" ry="4.6" fill="#D9B28B"/>
+    <ellipse cx="356" cy="417" rx="12" ry="5" fill="#CFE2EC"/>
+    <ellipse cx="356" cy="410" rx="12" ry="5" fill="#D6E6EE"/>
+  </g>
+  <!-- 桌上飘落一片花瓣 -->
+  <ellipse cx="318" cy="432" rx="6" ry="3.6" transform="rotate(24 318 432)" fill="#D6E6EE"/>
+
+  <!-- ================= 窗外飘进来的花瓣 ================= -->
+  <g fill="#D6E6EE">
+    <ellipse cx="120" cy="180" rx="6.5" ry="4" transform="rotate(-28 120 180)"/>
+    <ellipse cx="524" cy="150" rx="6" ry="3.8" transform="rotate(15 524 150)"/>
+    <ellipse cx="560" cy="300" rx="5.5" ry="3.4" transform="rotate(-40 560 300)"/>
+    <ellipse cx="150" cy="330" rx="5.5" ry="3.4" transform="rotate(20 150 330)"/>
+  </g>
+</svg>

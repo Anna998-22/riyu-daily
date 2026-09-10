@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="选择尺寸">
+  <!-- ================= 墙 + 光弧 ================= -->
+  <rect x="0" y="0" width="640" height="480" fill="#F6E8D9"/>
+  <rect x="58" y="70" width="252" height="292" rx="126" fill="#EEDDCA" opacity="0.85"/>
+  <rect x="352" y="70" width="230" height="300" rx="115" fill="#F2E2D3" opacity="0.9"/>
+
+  <!-- ================= 左：店員（把 M/L 两杯并排介绍给你） ================= -->
+  <g>
+    <ellipse cx="196" cy="224" rx="30" ry="32" fill="#5A434A"/>
+    <path d="M170 208 q30 -34 52 -6 q-6 16 -26 16 q-10 -6 -26 -10 z" fill="#7A5A5F" opacity="0.55"/>
+    <ellipse cx="198" cy="235" rx="18.5" ry="18" fill="#F6CBAF"/>
+    <path d="M182 226 q6 -10 16 -8 q10 -4 18 4 q2 10 -8 12 q-12 2 -26 -8 z" fill="#5A434A"/>
+    <path d="M178 216 q-8 20 -6 34 q4 2 8 0 q2 -16 4 -30 z" fill="#5A434A"/>
+    <path d="M218 216 q8 20 6 34 q-4 2 -8 0 q-2 -16 -4 -30 z" fill="#5A434A"/>
+    <line x1="186" y1="234" x2="193" y2="232" stroke="#8A5A52" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="205" y1="232" x2="212" y2="234" stroke="#8A5A52" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="192" cy="240" rx="3.4" ry="4.4" fill="#4A3438"/>
+    <ellipse cx="210" cy="240" rx="3.4" ry="4.4" fill="#4A3438"/>
+    <circle cx="193" cy="238.6" r="1" fill="#fff"/>
+    <circle cx="211" cy="238.6" r="1" fill="#fff"/>
+    <path d="M197 248 Q201 251 205 248" fill="none" stroke="#B0654A" stroke-width="2" stroke-linecap="round"/>
+    <ellipse cx="186" cy="246" rx="5" ry="2.8" fill="#EEA3A0" opacity="0.6"/>
+    <ellipse cx="212" cy="246" rx="5" ry="2.8" fill="#EEA3A0" opacity="0.6"/>
+    <!-- 颈 -->
+    <rect x="189" y="251" width="14" height="26" rx="7" fill="#F6CBAF"/>
+    <path d="M134 278 Q196 258 258 278 L272 476 Q196 490 120 476 Z" fill="#F1E6DA"/>
+    <path d="M166 284 Q196 274 226 284 L238 478 Q196 490 154 478 Z" fill="#3D6BA8"/>
+    <path d="M166 284 Q196 274 226 284 L222 308 Q196 302 170 308 Z" fill="#3898A0"/>
+    <!-- 双臂（身前交叠，双手可见） -->
+    <path d="M150 334 C170 330 180 322 190 320" fill="none" stroke="#F1E6DA" stroke-width="16" stroke-linecap="round"/>
+    <path d="M242 334 C222 330 212 322 202 320" fill="none" stroke="#F1E6DA" stroke-width="16" stroke-linecap="round"/>
+    <ellipse cx="191" cy="326" rx="8" ry="11" fill="#F6CBAF" transform="rotate(-10 191 326)"/>
+    <ellipse cx="201" cy="326" rx="8" ry="11" fill="#F6CBAF" transform="rotate(10 201 326)"/>
+    <rect x="136" y="264" width="20" height="56" rx="10" fill="#5A434A"/>
+    <rect x="236" y="264" width="20" height="56" rx="10" fill="#5A434A"/>
+  </g>
+
+  <!-- ================= 中间：M 与 L 两杯（L 大、M 小） ================= -->
+  <!-- L：大杯（左） -->
+  <g>
+    <ellipse cx="300" cy="424" rx="22" ry="6.5" fill="#C9A184"/>
+    <rect x="279" y="356" width="42" height="68" rx="10" fill="#FFFDF8"/>
+    <ellipse cx="300" cy="358" rx="21" ry="6" fill="#6E4A37"/>
+    <rect x="287" y="368" width="26" height="9" rx="4.5" fill="#3898A0"/>
+    <path d="M287 402 h-6 l8 6 l8 -6 h-6 M298 402 l8 6 l8 -6" stroke="#3D6BA8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M292 348 q-4 -8 0 -12 M304 348 q4 -9 0 -13" stroke="#D8B79A" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- M：小杯（右） -->
+  <g>
+    <ellipse cx="382" cy="424" rx="18" ry="5.5" fill="#C9A184"/>
+    <rect x="366" y="382" width="32" height="42" rx="8" fill="#FFFDF8"/>
+    <ellipse cx="382" cy="383" rx="16" ry="4.8" fill="#6E4A37"/>
+    <rect x="372" y="392" width="20" height="7" rx="3.5" fill="#3898A0"/>
+    <path d="M378 412 l6 6 l6 -6" stroke="#3D6BA8" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M376 374 q-3 -7 0 -11 M386 374 q3 -8 0 -12" stroke="#D8B79A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- 两朵樱粉小“选择”星光 -->
+  <g fill="#D6E6EE">
+    <ellipse cx="268" cy="342" rx="6" ry="6"/>
+    <ellipse cx="268" cy="330" rx="6" ry="6"/>
+    <ellipse cx="256" cy="336" rx="6" ry="6"/>
+    <ellipse cx="280" cy="336" rx="6" ry="6"/>
+    <ellipse cx="424" cy="362" rx="5" ry="5"/>
+    <ellipse cx="424" cy="352" rx="5" ry="5"/>
+    <ellipse cx="414" cy="357" rx="5" ry="5"/>
+    <ellipse cx="434" cy="357" rx="5" ry="5"/>
+  </g>
+
+  <!-- ================= 右：你（背影·粉外套·双手自然垂身侧） ================= -->
+  <g transform="translate(473 0)">
+    <rect x="-45" y="292" width="90" height="156" rx="34" fill="#3898A0"/>
+    <!-- 肩线（勾出肩膀） -->
+    <path d="M-20 304 Q-36 306 -43 324" stroke="#266C74" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <path d="M20 304 Q36 306 43 324" stroke="#266C74" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <!-- 两臂垂在身侧 -->
+    <path d="M-45 322 C-52 350 -53 372 -52 388" fill="none" stroke="#3898A0" stroke-width="15" stroke-linecap="round"/>
+    <path d="M45 322 C52 350 53 372 52 388" fill="none" stroke="#3898A0" stroke-width="15" stroke-linecap="round"/>
+    <!-- 双手（皮肤色小拳） -->
+    <ellipse cx="-54" cy="395" rx="6.5" ry="9" fill="#F6CBAF"/>
+    <ellipse cx="54" cy="395" rx="6.5" ry="9" fill="#F6CBAF"/>
+    <!-- 及肩发 -->
+    <ellipse cx="0" cy="250" rx="41" ry="45" fill="#5A434A"/>
+    <path d="M-38 236 q18 -34 42 -26 q6 18 -6 26 q-14 -8 -36 0 z" fill="#7A5A5F" opacity="0.6"/>
+    <!-- 低马尾 -->
+    <rect x="-14" y="290" width="28" height="176" rx="14" fill="#5A434A"/>
+    <path d="M-7 470 q7 6 14 0 q2 -40 0 -160 M7 470 q-7 6 -14 0 q-2 -36 0 -150" stroke="#7A5A5F" stroke-width="2" fill="none" opacity="0.5"/>
+    <!-- 发圈 -->
+    <rect x="-16" y="286" width="32" height="11" rx="5.5" fill="#3898A0"/>
+  </g>
+
+  <!-- ================= 底部柜台 ================= -->
+  <rect x="0" y="422" width="640" height="10" fill="#D3AC86"/>
+  <rect x="0" y="432" width="640" height="48" fill="#B8926F"/>
+  <rect x="0" y="474" width="640" height="6" fill="#A97F5E"/>
+</svg>

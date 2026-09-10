@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="取餐道别">
+  <!-- ================= 墙 + 柔和光弧 ================= -->
+  <rect x="0" y="0" width="640" height="480" fill="#F7E9DB"/>
+  <rect x="58" y="70" width="252" height="292" rx="126" fill="#F0DFCD" opacity="0.85"/>
+  <rect x="352" y="70" width="230" height="300" rx="115" fill="#EBD6C2" opacity="0.9"/>
+
+  <!-- ================= 暖色“出餐光”（平涂光斑，非渐变） ================= -->
+  <circle cx="320" cy="352" r="180" fill="#FFE9C6" opacity="0.42"/>
+
+  <!-- ================= 左上：暖帘 noren（出口方向） ================= -->
+  <g>
+    <rect x="-4" y="16" width="150" height="16" rx="7" fill="#C69B7A"/>
+    <rect x="6" y="32" width="64" height="222" fill="#3D6BA8"/>
+    <rect x="78" y="32" width="64" height="222" fill="#3D6BA8"/>
+    <rect x="6" y="222" width="64" height="20" fill="#3898A0"/>
+    <rect x="78" y="222" width="64" height="20" fill="#3898A0"/>
+    <g fill="#C9DFE8" opacity="0.85">
+      <circle cx="30" cy="70" r="4"/><circle cx="46" cy="120" r="3.2"/><circle cx="30" cy="170" r="3.6"/>
+      <circle cx="102" cy="84" r="3.4"/><circle cx="120" cy="140" r="3.8"/><circle cx="104" cy="196" r="3.2"/>
+    </g>
+    <path d="M144 40 a7 7 0 0 1 0 26 a7 7 0 0 1 0 -26" fill="#3898A0"/>
+  </g>
+
+  <!-- ================= 左：你（背影·镜像到左侧，手里那杯已取） ================= -->
+  <g transform="translate(640,0) scale(-1,1)">
+    <g transform="translate(457 0)">
+      <rect x="-45" y="292" width="90" height="156" rx="34" fill="#3898A0"/>
+      <!-- 肩线（勾出肩膀） -->
+      <path d="M-20 304 Q-36 306 -43 324" stroke="#266C74" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0.5"/>
+      <path d="M20 304 Q36 306 43 324" stroke="#266C74" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0.5"/>
+      <!-- 两臂垂在身侧 -->
+      <path d="M-45 322 C-52 350 -53 372 -52 388" fill="none" stroke="#3898A0" stroke-width="15" stroke-linecap="round"/>
+      <path d="M45 322 C52 350 53 372 52 388" fill="none" stroke="#3898A0" stroke-width="15" stroke-linecap="round"/>
+      <!-- 双手（皮肤色小拳） -->
+      <ellipse cx="-54" cy="395" rx="6.5" ry="9" fill="#F6CBAF"/>
+      <ellipse cx="54" cy="395" rx="6.5" ry="9" fill="#F6CBAF"/>
+      <!-- 及肩发 -->
+      <ellipse cx="0" cy="250" rx="41" ry="45" fill="#5A434A"/>
+      <path d="M-38 236 q18 -34 42 -26 q6 18 -6 26 q-14 -8 -36 0 z" fill="#7A5A5F" opacity="0.6"/>
+      <!-- 低马尾 -->
+      <rect x="-14" y="290" width="28" height="176" rx="14" fill="#5A434A"/>
+      <path d="M-7 470 q7 6 14 0 q2 -40 0 -160 M7 470 q-7 6 -14 0 q-2 -36 0 -150" stroke="#7A5A5F" stroke-width="2" fill="none" opacity="0.5"/>
+      <!-- 发圈 -->
+      <rect x="-16" y="286" width="32" height="11" rx="5.5" fill="#3898A0"/>
+    </g>
+  </g>
+
+  <!-- ================= 右：店員（镜像到右侧，双手递上） ================= -->
+  <g transform="translate(640,0) scale(-1,1)">
+    <ellipse cx="196" cy="222" rx="30" ry="32" fill="#5A434A"/>
+    <path d="M170 206 q30 -34 52 -6 q-6 16 -26 16 q-10 -6 -26 -10 z" fill="#7A5A5F" opacity="0.55"/>
+    <ellipse cx="198" cy="233" rx="18.5" ry="18" fill="#F6CBAF"/>
+    <path d="M182 224 q6 -10 16 -8 q10 -4 18 4 q2 10 -8 12 q-12 2 -26 -8 z" fill="#5A434A"/>
+    <path d="M178 214 q-8 20 -6 34 q4 2 8 0 q2 -16 4 -30 z" fill="#5A434A"/>
+    <path d="M218 214 q8 20 6 34 q-4 2 -8 0 q-2 -16 -4 -30 z" fill="#5A434A"/>
+    <line x1="186" y1="232" x2="193" y2="230" stroke="#8A5A52" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="205" y1="230" x2="212" y2="232" stroke="#8A5A52" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="192" cy="238" rx="3.4" ry="4.4" fill="#4A3438"/>
+    <ellipse cx="210" cy="238" rx="3.4" ry="4.4" fill="#4A3438"/>
+    <circle cx="193" cy="236.6" r="1" fill="#fff"/>
+    <circle cx="211" cy="236.6" r="1" fill="#fff"/>
+    <path d="M197 246 Q201 249 205 246" fill="none" stroke="#B0654A" stroke-width="2" stroke-linecap="round"/>
+    <ellipse cx="186" cy="244" rx="5" ry="2.8" fill="#EEA3A0" opacity="0.6"/>
+    <ellipse cx="212" cy="244" rx="5" ry="2.8" fill="#EEA3A0" opacity="0.6"/>
+    <!-- 颈 -->
+    <rect x="189" y="250" width="14" height="26" rx="7" fill="#F6CBAF"/>
+    <path d="M134 276 Q196 256 258 276 L272 476 Q196 490 120 476 Z" fill="#F1E6DA"/>
+    <path d="M166 282 Q196 272 226 282 L238 478 Q196 490 154 478 Z" fill="#3D6BA8"/>
+    <path d="M166 282 Q196 272 226 282 L222 306 Q196 300 170 306 Z" fill="#3898A0"/>
+    <!-- 双臂（身前交叠，双手可见） -->
+    <path d="M150 334 C170 330 180 322 190 320" fill="none" stroke="#F1E6DA" stroke-width="16" stroke-linecap="round"/>
+    <path d="M242 334 C222 330 212 322 202 320" fill="none" stroke="#F1E6DA" stroke-width="16" stroke-linecap="round"/>
+    <ellipse cx="191" cy="326" rx="8" ry="11" fill="#F6CBAF" transform="rotate(-10 191 326)"/>
+    <ellipse cx="201" cy="326" rx="8" ry="11" fill="#F6CBAF" transform="rotate(10 201 326)"/>
+    <rect x="136" y="262" width="20" height="56" rx="10" fill="#5A434A"/>
+    <rect x="236" y="262" width="20" height="56" rx="10" fill="#5A434A"/>
+  </g>
+
+  <!-- ================= 中间：托盘 + 热气腾腾的带盖纸杯 ================= -->
+  <g>
+    <!-- 托盘 -->
+    <ellipse cx="318" cy="424" rx="46" ry="10" fill="#D6B08C"/>
+    <rect x="272" y="412" width="92" height="10" rx="5" fill="#C69B7A"/>
+    <!-- 带盖杯 -->
+    <ellipse cx="318" cy="418" rx="23" ry="6.4" fill="#C9A184"/>
+    <rect x="297" y="352" width="42" height="66" rx="9" fill="#FFFDF8"/>
+    <rect x="300" y="382" width="36" height="24" rx="3" fill="#E8C9A9"/>
+    <line x1="312" y1="382" x2="312" y2="406" stroke="#D2AD86" stroke-width="2"/>
+    <line x1="324" y1="382" x2="324" y2="406" stroke="#D2AD86" stroke-width="2"/>
+    <circle cx="336" cy="394" r="3.6" fill="#3898A0"/>
+    <rect x="291" y="336" width="54" height="18" rx="8" fill="#F2E8DE"/>
+    <rect x="291" y="350" width="54" height="4" fill="#E6D6C8"/>
+    <ellipse cx="318" cy="344" rx="12" ry="3" fill="#EADACB"/>
+    <!-- 大团蒸汽 -->
+    <g stroke="#D8B79A" stroke-width="2.6" fill="none" stroke-linecap="round">
+      <path d="M302 322 q-5 -11 0 -17 M316 318 q5 -12 0 -19 M330 324 q-5 -10 0 -16"/>
+      <path d="M306 300 q-4 -9 0 -14 M322 296 q4 -10 0 -15"/>
+    </g>
+  </g>
+
+  <!-- ================= 飘落的花瓣 ================= -->
+  <g fill="#D6E6EE">
+    <ellipse cx="300" cy="250" rx="6" ry="3.8" transform="rotate(-24 300 250)"/>
+    <ellipse cx="180" cy="120" rx="5.6" ry="3.5" transform="rotate(18 180 120)"/>
+    <ellipse cx="430" cy="300" rx="6" ry="3.8" transform="rotate(-14 430 300)"/>
+    <ellipse cx="430" cy="128" rx="5" ry="3.2" transform="rotate(30 430 128)"/>
+  </g>
+
+  <!-- ================= 底部柜台 ================= -->
+  <rect x="0" y="422" width="640" height="10" fill="#D3AC86"/>
+  <rect x="0" y="432" width="640" height="48" fill="#B8926F"/>
+  <rect x="0" y="474" width="640" height="6" fill="#A97F5E"/>
+</svg>
